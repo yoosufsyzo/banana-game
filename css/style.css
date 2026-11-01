@@ -1,0 +1,142 @@
+/*
+ * Banana Game – style.css
+ * CIS046-3 Software for Enterprise
+ * Code written with help from Claude (AI assistant, Anthropic) and reviewed by the student.
+ */
+
+:root {
+  --bg: #FFF8E1; --card: #FFFFFF; --ink: #2B2118; --muted: #7A6A55; --line: #EFE3C2;
+  --yellow: #FFC93C; --yellow-dark: #F2B200; --yellow-light: #FFF1C2;
+  --green: #2F9E44; --green-light: #E3F6E7; --red: #E5484D; --red-light: #FDE8E8;
+  --blue: #3B6FD8; --blue-light: #E6EEFC;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: "Segoe UI", Arial, sans-serif; min-height: 100vh; }
+button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; }
+input { font: inherit; }
+.hidden { display: none !important; }
+.muted { color: var(--muted); }
+.center { text-align: center; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.center-row { justify-content: center; margin-top: 20px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 24px; border-radius: 12px; font-weight: 700; }
+.btn-primary { background: var(--yellow); box-shadow: 0 4px 0 var(--yellow-dark); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--yellow-dark); }
+.btn-outline { background: #fff; border: 2px solid var(--line); }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-small { height: 38px; padding: 0 14px; font-size: 14px; }
+.btn-large { height: 56px; padding: 0 56px; font-size: 18px; }
+.full { width: 100%; }
+
+/* Messages (errors, success, info) */
+.message { padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; margin-top: 12px; }
+.message.error { background: var(--red-light); color: var(--red); }
+.message.good { background: var(--green-light); color: var(--green); }
+.message.info { background: var(--blue-light); color: var(--blue); }
+
+/* Top bar */
+.topbar { display: flex; align-items: center; gap: 24px; padding: 0 28px; height: 68px; background: #fff; border-bottom: 1px solid var(--line); }
+.brand { font-size: 22px; font-weight: 800; }
+.brand.big { font-size: 26px; }
+nav { display: flex; gap: 6px; }
+.nav-btn { padding: 8px 16px; border-radius: 999px; font-weight: 600; color: var(--muted); }
+.nav-btn.active { background: var(--yellow-light); color: var(--ink); }
+.user-box { margin-left: auto; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--yellow); display: flex; align-items: center; justify-content: center; font-weight: 800; }
+
+/* Login */
+.auth-layout { display: flex; min-height: 100vh; }
+.auth-intro { flex: 0 0 42%; background: var(--yellow); padding: 64px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+.auth-intro h1 { font-size: 44px; line-height: 1.1; }
+.auth-intro p { font-size: 18px; }
+.auth-forms { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 440px; margin: 40px auto; padding: 0 20px; }
+.form { padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+.form h2 { font-size: 28px; }
+.form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 14px; }
+.form input { height: 46px; border: 2px solid var(--line); border-radius: 10px; padding: 0 14px; }
+.form input:focus { outline: none; border-color: var(--yellow-dark); }
+.switch { font-size: 14px; text-align: center; }
+.switch a { color: var(--blue); font-weight: 600; }
+.divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; margin: 18px 0; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.g-icon { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #4285F4; color: #4285F4; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+
+/* Pages (levels, leaderboard) */
+.page { max-width: 1100px; margin: 0 auto; padding: 36px 28px; }
+.page h2 { font-size: 32px; }
+
+/* Level cards */
+.levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 28px 0; }
+.level { padding: 26px; display: flex; flex-direction: column; gap: 12px; text-align: left; transition: transform .1s; }
+.level:hover { transform: translateY(-2px); }
+.level.selected { border: 3px solid var(--ink); box-shadow: 0 6px 0 var(--ink); }
+.level h3 { font-size: 26px; }
+.level-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; }
+.easy { background: var(--green-light); color: var(--green); }
+.medium { background: var(--yellow-light); color: #B07A00; }
+.hard { background: var(--red-light); color: var(--red); }
+.stat { display: flex; justify-content: space-between; padding: 10px 12px; background: var(--bg); border-radius: 10px; font-size: 15px; }
+
+/* Game */
+.game-layout { display: flex; gap: 24px; padding: 24px 28px; max-width: 1280px; margin: 0 auto; }
+.game-main { flex: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.hud { display: flex; gap: 14px; }
+.hud-box { padding: 12px 18px; display: flex; flex-direction: column; justify-content: center; }
+.hud-box small { color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.hud-box strong { font-size: 22px; }
+.timer-box { flex: 1; }
+.bar { height: 12px; background: var(--line); border-radius: 999px; overflow: hidden; margin-top: 6px; }
+#time-bar { height: 100%; width: 100%; background: var(--green); border-radius: 999px; transition: width 1s linear; }
+.timer-box.danger { border: 2px solid var(--red); }
+.timer-box.danger strong { color: var(--red); }
+.timer-box.danger #time-bar { background: var(--red); }
+.puzzle-area { min-height: 420px; display: flex; align-items: center; justify-content: center; padding: 20px; }
+#puzzle-img { max-width: 100%; max-height: 460px; }
+.puzzle-error { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 420px; }
+.puzzle-error h3 { color: var(--red); font-size: 22px; }
+.game-side { width: 320px; display: flex; flex-direction: column; gap: 16px; }
+.side-box { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.side-box h3 { font-size: 18px; }
+.small-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.badge { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.answer-box { height: 70px; border: 3px solid var(--ink); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 800; }
+.keypad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.key { height: 48px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); font-size: 20px; font-weight: 700; }
+.key:hover { background: var(--yellow-light); }
+.key.selected { background: var(--yellow); border-color: var(--yellow-dark); }
+
+/* Game over */
+.gameover { max-width: 560px; margin: 60px auto; padding: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.big-emoji { font-size: 56px; }
+.gameover h2 { font-size: 40px; }
+.final-score { font-size: 80px; font-weight: 800; line-height: 1; margin: 12px 0; }
+.over-stats { display: flex; gap: 14px; width: 100%; margin: 12px 0; }
+.over-stats div { flex: 1; background: var(--bg); border-radius: 12px; padding: 14px; }
+.over-stats b { display: block; font-size: 26px; }
+.over-stats small { color: var(--muted); }
+
+/* Leaderboard */
+.tabs { display: flex; gap: 6px; background: #fff; border: 1px solid var(--line); padding: 6px; border-radius: 12px; }
+.tab { padding: 8px 20px; border-radius: 8px; font-weight: 700; color: var(--muted); }
+.tab.active { background: var(--ink); color: #fff; }
+.table-card { margin-top: 24px; padding: 8px; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 12px; text-transform: uppercase; color: var(--muted); padding: 12px 20px; }
+td { padding: 12px 20px; border-top: 1px solid var(--line); }
+tr.me td { background: var(--yellow-light); font-weight: 700; }
+#leaderboard-status { padding: 16px; }
+
+/* Small screens */
+@media (max-width: 800px) {
+  .auth-layout, .game-layout { flex-direction: column; }
+  .auth-intro { padding: 32px; }
+  .auth-intro h1 { font-size: 30px; }
+  .levels { grid-template-columns: 1fr; }
+  .game-side { width: 100%; }
+  .topbar { gap: 12px; padding: 0 14px; }
+  #user-name { display: none; }
+}
