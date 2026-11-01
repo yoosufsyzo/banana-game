@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<!--
+  Banana Game – main page (all screens live in this one file)
+  CIS046-3 Software for Enterprise
+  Code written with help from Claude (AI assistant, Anthropic) and reviewed by the student.
+  Puzzles come from Marc Conrad's Banana API: https://marcconrad.com/uob/banana/
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banana Game</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== TOP BAR (only shown after login) ===== -->
+  <header id="topbar" class="topbar hidden">
+    <div class="brand">🍌 Banana Game</div>
+    <nav id="main-nav">
+      <button class="nav-btn" data-screen="levels-screen">Play</button>
+      <button class="nav-btn" data-screen="leaderboard-screen">Leaderboard</button>
+    </nav>
+    <div class="user-box">
+      <span class="avatar" id="user-avatar">?</span>
+      <span id="user-name"></span>
+      <button id="logout-btn" class="btn btn-small btn-outline">Log out</button>
+    </div>
+  </header>
+
+  <!-- ===== SCREEN 1: LOGIN / REGISTER ===== -->
+  <section id="login-screen" class="screen hidden">
+    <div class="auth-layout">
+      <div class="auth-intro">
+        <div class="brand big">🍌 Banana Game</div>
+        <h1>Find the missing digit before time runs out.</h1>
+        <p>Log in to play timed levels and save your score to the leaderboard.</p>
+      </div>
+
+      <div class="auth-forms">
+        <!-- Login form -->
+        <form id="login-form" class="card form" novalidate>
+          <h2>Log in</h2>
+          <label>Username <input name="username" autocomplete="username"></label>
+          <label>Password <input name="password" type="password" autocomplete="current-password"></label>
+          <button type="submit" class="btn btn-primary full">Log in</button>
+          <p class="switch">New player? <a href="#" id="show-register">Create an account</a></p>
+        </form>
+
+        <!-- Register form (hidden until "Create an account" is clicked) -->
+        <form id="register-form" class="card form hidden" novalidate>
+          <h2>Create account</h2>
+          <label>Username <input name="username" autocomplete="username"></label>
+          <label>Email <input name="email" type="email" autocomplete="email"></label>
+          <label>Password <input name="password" type="password" autocomplete="new-password"></label>
+          <label>Confirm password <input name="confirm" type="password" autocomplete="new-password"></label>
+          <button type="submit" class="btn btn-primary full">Create account</button>
+          <p class="switch">Already have an account? <a href="#" id="show-login">Log in</a></p>
+        </form>
+
+        <div class="divider">or</div>
+        <button id="google-btn" class="btn btn-outline full">
+          <span class="g-icon">G</span> Continue with Google
+        </button>
+        <p id="auth-message" class="message hidden"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN 2: CHOOSE LEVEL ===== -->
+  <section id="levels-screen" class="screen hidden">
+    <div class="page">
+      <h2>Choose your level</h2>
+      <p class="muted">Harder levels give you less time but more points.</p>
+
+      <div class="levels">
+        <button class="card level" data-level="EASY">
+          <span class="level-icon easy">E</span>
+          <h3>Easy</h3>
+          <span class="stat">Time per puzzle <b>60 sec</b></span>
+          <span class="stat">Lives <b>5</b></span>
+          <span class="stat">Points <b>10</b></span>
+        </button>
+        <button class="card level" data-level="MEDIUM">
+          <span class="level-icon medium">M</span>
+          <h3>Medium</h3>
+          <span class="stat">Time per puzzle <b>45 sec</b></span>
+          <span class="stat">Lives <b>3</b></span>
+          <span class="stat">Points <b>20</b></span>
+        </button>
+        <button class="card level" data-level="HARD">
+          <span class="level-icon hard">H</span>
+          <h3>Hard</h3>
+          <span class="stat">Time per puzzle <b>30 sec</b></span>
+          <span class="stat">Lives <b>3</b></span>
+          <span class="stat">Points <b>30</b></span>
+        </button>
+      </div>
+
+      <div class="center">
+        <button id="start-btn" class="btn btn-primary btn-large">Start game</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN 3: GAME ===== -->
+  <section id="game-screen" class="screen hidden">
+    <div class="game-layout">
+      <div class="game-main">
+        <!-- Heads-up display: timer, score, lives -->
+        <div class="hud">
+          <div class="card hud-box timer-box" id="timer-box">
+            <div class="row"><small>Time left</small><strong id="time-text">0s</strong></div>
+            <div class="bar"><div id="time-bar"></div></div>
+          </div>
+          <div class="card hud-box"><small>Score</small><strong id="score-text">0</strong></div>
+          <div class="card hud-box"><small>Lives</small><span id="lives-text"></span></div>
+        </div>
+
+        <!-- Puzzle area: shows ONE of loading / image / error -->
+        <div class="card puzzle-area">
+          <p id="puzzle-loading" class="muted">Loading puzzle…</p>
+          <img id="puzzle-img" class="hidden" alt="Banana puzzle: find the digit hidden by the banana">
+          <div id="puzzle-error" class="puzzle-error hidden">
+            <h3>Puzzle server unavailable</h3>
+            <p id="puzzle-error-text"></p>
+            <button id="retry-btn" class="btn btn-primary">Try again</button>
+            <button id="error-home-btn" class="btn btn-outline">Back to levels</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-side">
+        <div class="card side-box">
+          <div class="row"><h3>Enter the missing digit</h3><span id="level-badge" class="badge"></span></div>
+          <div id="answer-box" class="answer-box">?</div>
+          <div class="keypad">
+            <button class="key" data-digit="0">0</button><button class="key" data-digit="1">1</button>
+            <button class="key" data-digit="2">2</button><button class="key" data-digit="3">3</button>
+            <button class="key" data-digit="4">4</button><button class="key" data-digit="5">5</button>
+            <button class="key" data-digit="6">6</button><button class="key" data-digit="7">7</button>
+            <button class="key" data-digit="8">8</button><button class="key" data-digit="9">9</button>
+          </div>
+          <button id="submit-btn" class="btn btn-primary full">Submit</button>
+          <p id="feedback" class="message hidden"></p>
+        </div>
+        <div class="card side-box small-text">
+          Tip: type a number on your keyboard and press Enter.
+          When the timer reaches 0 you lose a life and the next puzzle loads.
+          <button id="quit-btn" class="btn btn-outline btn-small full">Quit game</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN 4: GAME OVER ===== -->
+  <section id="gameover-screen" class="screen hidden">
+    <div class="card gameover">
+      <div class="big-emoji">🍌</div>
+      <h2>Game over</h2>
+      <p class="muted" id="over-level"></p>
+      <div class="final-score" id="over-score">0</div>
+      <div class="over-stats">
+        <div><b id="over-correct">0</b><small>Correct</small></div>
+        <div><b id="over-wrong">0</b><small>Wrong / timed out</small></div>
+      </div>
+      <p id="save-status" class="message"></p>
+      <button id="save-again-btn" class="btn btn-outline hidden">Save again</button>
+      <div class="row center-row">
+        <button id="play-again-btn" class="btn btn-primary">Play again</button>
+        <button id="view-board-btn" class="btn btn-dark">View leaderboard</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN 5: LEADERBOARD ===== -->
+  <section id="leaderboard-screen" class="screen hidden">
+    <div class="page">
+      <div class="row">
+        <div>
+          <h2>Leaderboard</h2>
+          <p class="muted">Top 10 players for each level.</p>
+        </div>
+        <div class="tabs">
+          <button class="tab" data-level="EASY">Easy</button>
+          <button class="tab" data-level="MEDIUM">Medium</button>
+          <button class="tab" data-level="HARD">Hard</button>
+        </div>
+      </div>
+      <div class="card table-card">
+        <table>
+          <thead><tr><th>Rank</th><th>Player</th><th>Score</th><th>Correct</th><th>Date</th></tr></thead>
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+        <p id="leaderboard-status" class="muted center"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts: order matters, because later files use things from earlier ones -->
+  <script src="js/config.js"></script>
+  <script src="js/bananaApi.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/leaderboard.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
