@@ -76,8 +76,17 @@ let lastResult = null;
 
 document.addEventListener("gameover", (event) => {
   lastResult = event.detail;
-  document.getElementById("over-level").textContent =
-    CONFIG.LEVELS[lastResult.levelKey].name + " level · all lives used";
+  const levelName = CONFIG.LEVELS[lastResult.levelKey].name;
+
+  // Different title depending on HOW the game ended
+  if (lastResult.reason === "complete") {
+    document.getElementById("over-title").textContent = "Well done!";
+    document.getElementById("over-level").textContent =
+      `${levelName} level · all ${lastResult.totalPuzzles} puzzles finished`;
+  } else {
+    document.getElementById("over-title").textContent = "Game over";
+    document.getElementById("over-level").textContent = `${levelName} level · all lives used`;
+  }
   document.getElementById("over-score").textContent = lastResult.score;
   document.getElementById("over-correct").textContent = lastResult.correct;
   document.getElementById("over-wrong").textContent = lastResult.wrong;

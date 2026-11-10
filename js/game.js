@@ -134,19 +134,28 @@ function handleTimeUp() {
   goToNextStep();
 }
 
-// After an answer: wait 1.5 s so the player can read the feedback, then continue
+// How many puzzles the player has answered so far (right, wrong or timed out)
+function puzzlesAnswered() {
+  return game.correct + game.wrong;
+}
+
+// After an answer: wait 1.5 s so the player can read the feedback, then continue.
+// The game ends when the lives run out OR all the puzzles of the level are done.
 function goToNextStep() {
   setTimeout(() => {
     if (!game.running) return;
     if (game.lives <= 0) {
-      endGame();
+      endGame("lives");
+    } else if (puzzlesAnswered() >= game.level.puzzles) {
+      endGame("complete");
     } else {
       loadNextPuzzle();
     }
   }, 1500);
 }
 
-function endGame() {
+// reason is "complete" (all puzzles done) or "lives" (no lives left)
+function endGame(reason) {
   game.running = false;
   stopTimer();
 
@@ -154,9 +163,11 @@ function endGame() {
   // main.js listens for "gameover" and shows the results and saves the score.
   const result = {
     levelKey: game.levelKey,
+    reason: reason,
     score: game.score,
     correct: game.correct,
     wrong: game.wrong,
+    totalPuzzles: game.level.puzzles,
   };
   document.dispatchEvent(new CustomEvent("gameover", { detail: result }));
 }
@@ -224,6 +235,9 @@ function handleKeyboard(event) {
 // ---------------------------------------------------------------------------
 function updateHud() {
   el("score-text").textContent = game.score;
+  // e.g. "3 / 10": the puzzle the player is on now
+  const current = Math.min(puzzlesAnswered() + 1, game.level.puzzles);
+  el("puzzle-text").textContent = `${current} / ${game.level.puzzles}`;
   el("lives-text").textContent =
     "❤️".repeat(Math.max(game.lives, 0)) + "🤍".repeat(game.level.lives - Math.max(game.lives, 0));
 }

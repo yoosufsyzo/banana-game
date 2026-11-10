@@ -165,7 +165,8 @@ const MockBackend = {
   async getLeaderboard(levelKey) {
     return this.load("bg_scores")
       .filter(s => s.difficulty === levelKey)
-      .sort((a, b) => b.score - a.score)
+      // Highest score first. If two scores are equal, whoever got it first ranks higher.
+      .sort((a, b) => b.score - a.score || a.playedAt.localeCompare(b.playedAt))
       .slice(0, 10);
   },
 };
