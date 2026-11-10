@@ -4,7 +4,7 @@ CIS046-3 Software for Enterprise, Assignment 1.
 
 A timed puzzle game built around **Marc Conrad's Banana API**. The puzzle comes from the API. Login, levels, the timer, scores and the leaderboard are built around it.
 
-. Each file says this in its header comment. Puzzles come from Marc Conrad's Banana API: https://marcconrad.com/uob/banana/
+> **Code origin:** this code was written with help from Claude (AI assistant, Anthropic) and reviewed by the student. Each file says this in its header comment. Puzzles come from Marc Conrad's Banana API: https://marcconrad.com/uob/banana/
 
 ---
 

@@ -17,11 +17,13 @@ const CONFIG = {
   USE_MOCK_BACKEND: true,
   BACKEND_URL: "http://localhost:8080/api",
 
-  // The three difficulty levels
+  // The three difficulty levels.
+  // puzzles = how many puzzles one game has. The game ends after that many puzzles,
+  // or earlier if the player runs out of lives.
   LEVELS: {
-    EASY:   { name: "Easy",   seconds: 60, lives: 5, points: 10 },
-    MEDIUM: { name: "Medium", seconds: 45, lives: 3, points: 20 },
-    HARD:   { name: "Hard",   seconds: 30, lives: 3, points: 30 },
+    EASY:   { name: "Easy",   seconds: 60, lives: 5, points: 10, puzzles: 10 },
+    MEDIUM: { name: "Medium", seconds: 45, lives: 3, points: 20, puzzles: 10 },
+    HARD:   { name: "Hard",   seconds: 30, lives: 3, points: 30, puzzles: 10 },
   },
 
   // Timer turns red when this many seconds are left

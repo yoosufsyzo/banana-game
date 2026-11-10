@@ -71,7 +71,7 @@
   <section id="levels-screen" class="screen hidden">
     <div class="page">
       <h2>Choose your level</h2>
-      <p class="muted">Harder levels give you less time but more points.</p>
+      <p class="muted">Each game has 10 puzzles. Harder levels give you less time but more points.</p>
 
       <div class="levels">
         <button class="card level" data-level="EASY">
@@ -80,6 +80,7 @@
           <span class="stat">Time per puzzle <b>60 sec</b></span>
           <span class="stat">Lives <b>5</b></span>
           <span class="stat">Points <b>10</b></span>
+          <span class="stat">Puzzles <b>10</b></span>
         </button>
         <button class="card level" data-level="MEDIUM">
           <span class="level-icon medium">M</span>
@@ -87,6 +88,7 @@
           <span class="stat">Time per puzzle <b>45 sec</b></span>
           <span class="stat">Lives <b>3</b></span>
           <span class="stat">Points <b>20</b></span>
+          <span class="stat">Puzzles <b>10</b></span>
         </button>
         <button class="card level" data-level="HARD">
           <span class="level-icon hard">H</span>
@@ -94,6 +96,7 @@
           <span class="stat">Time per puzzle <b>30 sec</b></span>
           <span class="stat">Lives <b>3</b></span>
           <span class="stat">Points <b>30</b></span>
+          <span class="stat">Puzzles <b>10</b></span>
         </button>
       </div>
 
@@ -113,6 +116,7 @@
             <div class="row"><small>Time left</small><strong id="time-text">0s</strong></div>
             <div class="bar"><div id="time-bar"></div></div>
           </div>
+          <div class="card hud-box"><small>Puzzle</small><strong id="puzzle-text">1 / 10</strong></div>
           <div class="card hud-box"><small>Score</small><strong id="score-text">0</strong></div>
           <div class="card hud-box"><small>Lives</small><span id="lives-text"></span></div>
         </div>
@@ -146,7 +150,8 @@
         </div>
         <div class="card side-box small-text">
           Tip: type a number on your keyboard and press Enter.
-          When the timer reaches 0 you lose a life and the next puzzle loads.
+          A game has 10 puzzles. A wrong answer or running out of time costs a life,
+          and the game ends early if you lose them all.
           <button id="quit-btn" class="btn btn-outline btn-small full">Quit game</button>
         </div>
       </div>
@@ -157,7 +162,7 @@
   <section id="gameover-screen" class="screen hidden">
     <div class="card gameover">
       <div class="big-emoji">🍌</div>
-      <h2>Game over</h2>
+      <h2 id="over-title">Game over</h2>
       <p class="muted" id="over-level"></p>
       <div class="final-score" id="over-score">0</div>
       <div class="over-stats">
