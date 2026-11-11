@@ -89,6 +89,7 @@ async function loadNextPuzzle() {
   game.waitingForAnswer = false;
   clearChoice();
   hideFeedback();
+  updatePuzzleCounter();
   setPuzzleState("loading");
 
   try {
@@ -248,11 +249,14 @@ function handleKeyboard(event) {
 // ---------------------------------------------------------------------------
 function updateHud() {
   el("score-text").textContent = game.score;
-  // e.g. "3 / 10": the puzzle the player is on now
-  const current = Math.min(puzzlesAnswered() + 1, game.level.puzzles);
-  el("puzzle-text").textContent = `${current} / ${game.level.puzzles}`;
   el("lives-text").textContent =
     "❤️".repeat(Math.max(game.lives, 0)) + "🤍".repeat(game.level.lives - Math.max(game.lives, 0));
+}
+
+// e.g. "3 / 10": the puzzle the player is on now.
+// Updated when a new puzzle loads, not straight after an answer.
+function updatePuzzleCounter() {
+  el("puzzle-text").textContent = `${puzzlesAnswered() + 1} / ${game.level.puzzles}`;
 }
 
 function updateTimerDisplay() {

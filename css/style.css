@@ -52,7 +52,7 @@ nav { display: flex; gap: 6px; }
 
 /* Login */
 .auth-layout { display: flex; min-height: 100vh; }
-.auth-intro { flex: 0 0 42%; background: var(--yellow); padding: 64px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+.auth-intro { position: relative; overflow: hidden; flex: 0 0 42%; background: var(--yellow); padding: 64px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
 .auth-intro h1 { font-size: 44px; line-height: 1.1; }
 .auth-intro p { font-size: 18px; }
 .auth-forms { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 440px; margin: 40px auto; padding: 0 20px; }
@@ -77,7 +77,7 @@ nav { display: flex; gap: 6px; }
 .level:hover { transform: translateY(-2px); }
 .level.selected { border: 3px solid var(--ink); box-shadow: 0 6px 0 var(--ink); }
 .level h3 { font-size: 26px; }
-.level-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; }
+.level-icon { min-width: 50px; width: fit-content; padding: 0 10px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; }
 .easy { background: var(--green-light); color: var(--green); }
 .medium { background: var(--yellow-light); color: #B07A00; }
 .hard { background: var(--red-light); color: var(--red); }
@@ -131,6 +131,35 @@ th { text-align: left; font-size: 12px; text-transform: uppercase; color: var(--
 td { padding: 12px 20px; border-top: 1px solid var(--line); }
 tr.me td { background: var(--yellow-light); font-weight: 700; }
 #leaderboard-status { padding: 16px; }
+
+/* ===== Banana touches ===== */
+.auth-intro > *:not(.float-banana) { position: relative; } /* keep text above the bananas */
+.float-banana { position: absolute; font-size: 42px; opacity: .35; animation: float 6s ease-in-out infinite; pointer-events: none; }
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-10deg); }
+  50%      { transform: translateY(-18px) rotate(12deg); }
+}
+.spin-banana { display: inline-block; animation: spin 1s linear infinite; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Bananas made by effects.js */
+.fx-banana { position: fixed; z-index: 50; pointer-events: none; font-size: 26px; transform: translate(-50%, -50%); }
+.fx-burst { animation: burst .8s ease-out forwards; }
+@keyframes burst {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(.6); }
+  to   { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2) rotate(180deg); }
+}
+.fx-rain { animation-name: rain; animation-timing-function: linear; animation-fill-mode: forwards; opacity: 0; }
+@keyframes rain {
+  0%   { opacity: 1; transform: translateY(0) rotate(0); }
+  100% { opacity: .8; transform: translateY(calc(100vh + 80px)) rotate(540deg); }
+}
+
+/* Players who turn off animations in their system settings get no moving bananas */
+@media (prefers-reduced-motion: reduce) {
+  .float-banana, .spin-banana { animation: none; }
+  .fx-banana { display: none; }
+}
 
 /* Small screens */
 @media (max-width: 800px) {

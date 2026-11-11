@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupLeaderboardEvents();
   setupNavEvents();
   setupSoundEvents();
+  setupEffectEvents();
 
   const user = await Backend.currentUser();
   if (user) {
