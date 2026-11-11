@@ -10,6 +10,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Banana Game</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍌</text></svg>">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -33,6 +34,12 @@
   <section id="login-screen" class="screen hidden">
     <div class="auth-layout">
       <div class="auth-intro">
+        <!-- Decoration: bananas floating in the background -->
+        <span class="float-banana" style="left:8%;  top:12%; animation-delay:0s">🍌</span>
+        <span class="float-banana" style="left:78%; top:8%;  animation-delay:1.2s">🍌</span>
+        <span class="float-banana" style="left:65%; top:70%; animation-delay:2.1s">🍌</span>
+        <span class="float-banana" style="left:15%; top:80%; animation-delay:0.6s">🍌</span>
+        <span class="float-banana" style="left:85%; top:42%; animation-delay:3s">🍌</span>
         <div class="brand big">🍌 Banana Game</div>
         <h1>Find the missing digit before time runs out.</h1>
         <p>Log in to play timed levels and save your score to the leaderboard.</p>
@@ -76,7 +83,7 @@
 
       <div class="levels">
         <button class="card level" data-level="EASY">
-          <span class="level-icon easy">E</span>
+          <span class="level-icon easy">🍌</span>
           <h3>Easy</h3>
           <span class="stat">Time per puzzle <b>60 sec</b></span>
           <span class="stat">Lives <b>5</b></span>
@@ -84,7 +91,7 @@
           <span class="stat">Puzzles <b>10</b></span>
         </button>
         <button class="card level" data-level="MEDIUM">
-          <span class="level-icon medium">M</span>
+          <span class="level-icon medium">🍌🍌</span>
           <h3>Medium</h3>
           <span class="stat">Time per puzzle <b>45 sec</b></span>
           <span class="stat">Lives <b>3</b></span>
@@ -92,7 +99,7 @@
           <span class="stat">Puzzles <b>10</b></span>
         </button>
         <button class="card level" data-level="HARD">
-          <span class="level-icon hard">H</span>
+          <span class="level-icon hard">🍌🍌🍌</span>
           <h3>Hard</h3>
           <span class="stat">Time per puzzle <b>30 sec</b></span>
           <span class="stat">Lives <b>3</b></span>
@@ -124,7 +131,7 @@
 
         <!-- Puzzle area: shows ONE of loading / image / error -->
         <div class="card puzzle-area">
-          <p id="puzzle-loading" class="muted">Loading puzzle…</p>
+          <p id="puzzle-loading" class="muted"><span class="spin-banana">🍌</span> Loading puzzle…</p>
           <img id="puzzle-img" class="hidden" alt="Banana puzzle: find the digit hidden by the banana">
           <div id="puzzle-error" class="puzzle-error hidden">
             <h3>Puzzle server unavailable</h3>
@@ -212,6 +219,7 @@
   <script src="js/game.js"></script>
   <script src="js/leaderboard.js"></script>
   <script src="js/sound.js"></script>
+  <script src="js/effects.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
