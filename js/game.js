@@ -1,8 +1,9 @@
 /*
  * Banana Game – game.js
  * The game itself: loading puzzles, the countdown timer, checking answers, lives and score.
- * EVENTS: button clicks, keyboard presses, the image "load" event, the timer (setInterval)
- * and our own custom "gameover" event.
+ * EVENTS: button clicks, keyboard presses, the image "load" event, the timer (setInterval).
+ * It also SENDS its own custom events (see emit below), e.g. "game:correct" and "gameover",
+ * so other files (sound.js, main.js) can react without game.js knowing about them.
  *
  * CIS046-3 Software for Enterprise
  * Code written with help from Claude (AI assistant, Anthropic) and reviewed by the student.
@@ -27,6 +28,12 @@ const game = {
 // Shortcut so we don't repeat document.getElementById everywhere
 function el(id) {
   return document.getElementById(id);
+}
+
+// Send our own custom event, e.g. emit("game:correct").
+// Any file can listen with document.addEventListener("game:correct", ...)
+function emit(eventName, detail = {}) {
+  document.dispatchEvent(new CustomEvent(eventName, { detail: detail }));
 }
 
 // ---------------------------------------------------------------------------
@@ -73,6 +80,7 @@ function startGame(levelKey) {
   updateTimerDisplay();
   updateHud();
   showScreen("game-screen");
+  emit("game:start", { levelKey: levelKey });
   loadNextPuzzle();
 }
 
@@ -115,10 +123,12 @@ function submitAnswer() {
     game.score += game.level.points;
     game.correct++;
     showFeedback(`Correct! +${game.level.points} points`, "good");
+    emit("game:correct");
   } else {
     game.wrong++;
     game.lives--;
     showFeedback(`Not quite. The answer was ${game.solution}. −1 life`, "error");
+    emit("game:wrong");
   }
 
   updateHud();
@@ -130,6 +140,7 @@ function handleTimeUp() {
   game.wrong++;
   game.lives--;
   showFeedback(`Time's up! The answer was ${game.solution}. −1 life`, "error");
+  emit("game:timeup");
   updateHud();
   goToNextStep();
 }
@@ -169,13 +180,14 @@ function endGame(reason) {
     wrong: game.wrong,
     totalPuzzles: game.level.puzzles,
   };
-  document.dispatchEvent(new CustomEvent("gameover", { detail: result }));
+  emit("gameover", result);
 }
 
 function quitGame() {
   if (!game.running) return;
   game.running = false;
   stopTimer();
+  emit("game:quit");
   showScreen("levels-screen");
 }
 
@@ -190,6 +202,7 @@ function startTimer() {
   game.timerId = setInterval(() => {
     game.timeLeft--;
     updateTimerDisplay();
+    emit("game:tick", { timeLeft: game.timeLeft });
     if (game.timeLeft <= 0) {
       stopTimer();
       handleTimeUp();
