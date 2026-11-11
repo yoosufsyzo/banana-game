@@ -1,27 +1,11 @@
 /*
  * Banana Game – main.js
- * Starts the app, switches between screens, remembers the chosen level in a cookie,
- * and handles the end of a game.
+ * Starts the app, switches between screens, remembers the chosen level in a cookie
+ * (helpers in cookies.js), and handles the end of a game.
  *
  * CIS046-3 Software for Enterprise
  * Code written with help from Claude (AI assistant, Anthropic) and reviewed by the student.
  */
-
-// ---------------------------------------------------------------------------
-// COOKIES (virtual identity / preferences)
-// A normal cookie that remembers the player's last level for 30 days.
-// The login session cookie will come from the Java server and be HttpOnly,
-// so JavaScript can't read it (protects against stolen sessions).
-// ---------------------------------------------------------------------------
-function setCookie(name, value, days) {
-  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
-}
-
-function getCookie(name) {
-  const match = document.cookie.split("; ").find(row => row.startsWith(name + "="));
-  return match ? decodeURIComponent(match.split("=")[1]) : null;
-}
 
 // ---------------------------------------------------------------------------
 // SCREENS
@@ -134,6 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupGameEvents();
   setupLeaderboardEvents();
   setupNavEvents();
+  setupSoundEvents();
 
   const user = await Backend.currentUser();
   if (user) {
